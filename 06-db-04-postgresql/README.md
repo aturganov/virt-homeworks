@@ -139,13 +139,14 @@ CREATE TABLE
 root@a592f032153c:~# pg_dump -U postgres test_database -f /var/lib/postgresql/test_dump2.sql
 ```
 Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца `title` для таблиц `test_database`?
+
+https://postgrespro.ru/docs/postgrespro/9.5/ddl-constraints
+согласно описанию включил первый вариант (про уникальность пункт 5.3.3. Ограничения уникальности)
 ```buildoutcfg
-CREATE TABLE public.orders (
+CREATE TABLE test.orders (
     id integer NOT NULL,
-    title character varying(80) NOT NULL,
-    price integer DEFAULT 0,
-    -- Добавить ключ уникальности
-    CONSTRAINT title_unique UNIQUE (title)
+    title character varying(80) NOT NULL UNIQUE,
+    price integer DEFAULT 0
 );
 ```
 ---
