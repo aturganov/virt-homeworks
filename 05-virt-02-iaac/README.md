@@ -16,11 +16,39 @@
 ## Задача 1
 
 - Опишите своими словами основные преимущества применения на практике IaaC паттернов.
-- Какой из принципов IaaC является основополагающим?
+```buildoutcfg
+С оговоркой, что IAAC подход применим при массовом наборе серверов (к примеру от 10), имеющим некую 
+однотипность применения, как например, сервера кластера. Преимущества. 
+За счет автоматизации повышение эффективности труда, как результат повышение скорость создания/изменение програмного продукта), 
+ускорения работы при масштабировании.
+Повышение контроля конфигураций, защита/контроль от произвольного ручного труда. Стабильность среды.
+Сокращение жизненного цикла разработки. А также быстрое создание среды.
 
+Сам я пока только 8 коммерческих серверов волей случая поддерживаю и 5 личных. 
+Каждый сервер уникальных зоопарк решений. Чувствуется, что еще пару тройку добавить и точно надо переходить
+будет на IAAC. Пока, что в основном докер из универсального.
+```
+- Какой из принципов IaaC является основополагающим?
+```buildoutcfg
+Основной идемпотентность - получить идентичность при повторном выполнении.
+```
 ## Задача 2
 
 - Чем Ansible выгодно отличается от других систем управление конфигурациями?
+```buildoutcfg
+Мы честно говоря уже намучались с RedHat с началом санкций, приходится держать реестры свои. 
+Все началось с того, что RHEL отменил регистрацию, со всеми вытекающими. 
+Поэтому пока сложно сказать, что будет дальше. Это о санционных скорее минусах.
+
+О плюсах, ну, это все же регламентируемой подход в написании и транслированни кода настроек сверху (push).
+Относительно простои и универсальный. Низкий порог входа.
+Ну лично для меня будущий +, что он написан на python. 
+То есть можно понять как он работает изнутри по исходникам. Довольно часто это нужно, в случае сырых мест в решении.
+Подход Декларативно/Императивный.
+
+Пока же, какой то особой необходимости у меня нет на ansible. Поскольку достаточно докер и максимум еще Terraform.
+Но важно как то успеть сдать задания, чтобы более глубоко познакомиться с ansible в следующем модуле!!!
+```
 - Какой, на ваш взгляд, метод работы систем конфигурации более надёжный push или pull?
 
 ## Задача 3
@@ -28,9 +56,38 @@
 Установить на личный компьютер:
 
 - VirtualBox
-- Vagrant
-- Ansible
+```buildoutcfg
+ at@srv01:~$ virtualbox -h
+Oracle VM VirtualBox VM Selector v6.0.14_Ubuntu
+(C) 2005-2019 Oracle Corporation
+All rights reserved.
+```
 
+- Vagrant
+```buildoutcfg
+  at@srv01:~$ vagrant version
+  Installed Version: 2.2.19
+  Latest Version: 2.2.19
+```   
+- Ansible
+```buildoutcfg
+at@srv01:~$ ansible  --version  
+ansible 2.8.3
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/home/at/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 3.7.5 (default, Apr 19 2020, 20:18:17) [GCC 9.2.1 20191008]
+
+at@srv01:~$ ansible-inventory --list -y
+all:
+  children:
+    servers:
+      hosts:
+        server1:
+          ansible_host: 95.214.8.211
+    ungrouped: {}
+```
 *Приложить вывод команд установленных версий каждой из программ, оформленный в markdown.*
 
 ## Задача 4 (*)
@@ -40,5 +97,38 @@
 - Создать виртуальную машину.
 - Зайти внутрь ВМ, убедиться, что Docker установлен с помощью команды
 ```
-docker ps
+vagrant@vagrant:~$ docker version
+Client: Docker Engine - Community
+ Version:           20.10.12
+ API version:       1.41
+ Go version:        go1.16.12
+ Git commit:        e91ed57
+ Built:             Mon Dec 13 11:45:27 2021
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          20.10.12
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.16.12
+  Git commit:       459d0df
+  Built:            Mon Dec 13 11:43:36 2021
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.4.12
+  GitCommit:        7b11cfaabd73bb80907dd23182b9347b4245eb5d
+ runc:
+  Version:          1.0.2
+  GitCommit:        v1.0.2-0-g52b36a2
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+  
+vagrant@vagrant:~$ docker ps
+CONTAINER ID   IMAGE                      COMMAND                  CREATED         STATUS       PORTS                                                                                                NAMES
+0619fdfca9c7   postgres:12                "docker-entrypoint.s…"   18 months ago   Up 2 hours   0.0.0.0:8022->22/tcp, :::8022->22/tcp, 0.0.0.0:8032->5432/tcp, :::8032->5432/tcp                     uva001_postDB
+21373efa5bb9   yandex/clickhouse-server   "/entrypoint.sh"         2 years ago     Up 2 hours   9009/tcp, 0.0.0.0:18123->8123/tcp, :::18123->8123/tcp, 0.0.0.0:19000->9000/tcp, :::19000->9000/tcp   clickhouse_1
 ```
